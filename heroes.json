@@ -1,14 +1,168 @@
 [
-  {"name": "諸葛亮", "camp": "蜀", "troop": "弓"},
-  {"name": "姜維", "camp": "蜀", "troop": "槍"},
-  {"name": "龐統", "camp": "蜀", "troop": "盾"},
-  {"name": "曹操", "camp": "魏", "troop": "騎"},
-  {"name": "郭嘉", "camp": "魏", "troop": "盾"},
-  {"name": "夏侯惇", "camp": "魏", "troop": "盾"},
-  {"name": "周瑜", "camp": "吳", "troop": "弓"},
-  {"name": "陸遜", "camp": "吳", "troop": "弓"},
-  {"name": "小喬", "camp": "吳", "troop": "盾"},
-  {"name": "呂布", "camp": "群", "troop": "騎"},
-  {"name": "董卓", "camp": "群", "troop": "盾"},
-  {"name": "馬騰", "camp": "群", "troop": "騎"}
+  {
+    "name": "諸葛亮",
+    "camp": "蜀",
+    "troop": "弓",
+    "season": "S1"
+  },
+  {
+    "name": "姜維",
+    "camp": "蜀",
+    "troop": "槍",
+    "season": "S1"
+  },
+  {
+    "name": "龐統",
+    "camp": "蜀",
+    "troop": "盾",
+    "season": "S1"
+  },
+  {
+    "name": "關羽",
+    "camp": "蜀",
+    "troop": "騎",
+    "season": "S1"
+  },
+  {
+    "name": "張飛",
+    "camp": "蜀",
+    "troop": "盾",
+    "season": "S1"
+  },
+  {
+    "name": "趙雲",
+    "camp": "蜀",
+    "troop": "騎",
+    "season": "S1"
+  },
+
+  {
+    "name": "曹操",
+    "camp": "魏",
+    "troop": "騎",
+    "season": "S1"
+  },
+  {
+    "name": "郭嘉",
+    "camp": "魏",
+    "troop": "盾",
+    "season": "S1"
+  },
+  {
+    "name": "夏侯惇",
+    "camp": "魏",
+    "troop": "盾",
+    "season": "S1"
+  },
+  {
+    "name": "司馬懿",
+    "camp": "魏",
+    "troop": "弓",
+    "season": "S2"
+  },
+  {
+    "name": "張遼",
+    "camp": "魏",
+    "troop": "騎",
+    "season": "S2"
+  },
+  {
+    "name": "許褚",
+    "camp": "魏",
+    "troop": "盾",
+    "season": "S2"
+  },
+
+  {
+    "name": "周瑜",
+    "camp": "吳",
+    "troop": "弓",
+    "season": "S1"
+  },
+  {
+    "name": "陸遜",
+    "camp": "吳",
+    "troop": "弓",
+    "season": "S1"
+  },
+  {
+    "name": "小喬",
+    "camp": "吳",
+    "troop": "盾",
+    "season": "S1"
+  },
+  {
+    "name": "孫權",
+    "camp": "吳",
+    "troop": "弓",
+    "season": "S2"
+  },
+  {
+    "name": "太史慈",
+    "camp": "吳",
+    "troop": "弓",
+    "season": "S2"
+  },
+  {
+    "name": "甘寧",
+    "camp": "吳",
+    "troop": "騎",
+    "season": "S2"
+  },
+
+  {
+    "name": "呂布",
+    "camp": "群",
+    "troop": "騎",
+    "season": "S1"
+  },
+  {
+    "name": "董卓",
+    "camp": "群",
+    "troop": "盾",
+    "season": "S1"
+  },
+  {
+    "name": "馬騰",
+    "camp": "群",
+    "troop": "騎",
+    "season": "S2"
+  },
+  {
+    "name": "袁紹",
+    "camp": "群",
+    "troop": "弓",
+    "season": "S2"
+  },
+  {
+    "name": "貂蟬",
+    "camp": "群",
+    "troop": "盾",
+    "season": "S3"
+  },
+  {
+    "name": "華雄",
+    "camp": "群",
+    "troop": "騎",
+    "season": "S3"
+  },
+
+  {
+    "name": "周泰",
+    "camp": "吳",
+    "troop": "盾",
+    "season": "S3"
+  },
+  {
+    "name": "黃忠",
+    "camp": "蜀",
+    "troop": "弓",
+    "season": "S3"
+  },
+  {
+    "name": "于吉",
+    "camp": "群",
+    "troop": "盾",
+    "season": "S3"
+  }
 ]
