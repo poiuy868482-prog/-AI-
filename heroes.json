@@ -1,168 +1,53 @@
 [
-  {
-    "name": "諸葛亮",
-    "camp": "蜀",
-    "troop": "弓",
-    "season": "S1"
-  },
-  {
-    "name": "姜維",
-    "camp": "蜀",
-    "troop": "槍",
-    "season": "S1"
-  },
-  {
-    "name": "龐統",
-    "camp": "蜀",
-    "troop": "盾",
-    "season": "S1"
-  },
-  {
-    "name": "關羽",
-    "camp": "蜀",
-    "troop": "騎",
-    "season": "S1"
-  },
-  {
-    "name": "張飛",
-    "camp": "蜀",
-    "troop": "盾",
-    "season": "S1"
-  },
-  {
-    "name": "趙雲",
-    "camp": "蜀",
-    "troop": "騎",
-    "season": "S1"
-  },
+  {"name":"諸葛亮","camp":"蜀","troop":"弓","season":"S1","rarity":"SP","tags":["法傷","控制","蜀智"]},
+  {"name":"姜維","camp":"蜀","troop":"槍","season":"S1","rarity":"SP","tags":["法傷","輸出","蜀智"]},
+  {"name":"龐統","camp":"蜀","troop":"盾","season":"S1","rarity":"SP","tags":["爆發","法傷","蜀智"]},
+  {"name":"關羽","camp":"蜀","troop":"騎","season":"S1","rarity":"SP","tags":["控制","爆發"]},
+  {"name":"張飛","camp":"蜀","troop":"盾","season":"S1","rarity":"SP","tags":["坦克","輸出"]},
+  {"name":"趙雲","camp":"蜀","troop":"騎","season":"S1","rarity":"SP","tags":["突擊","穩定"]},
+  {"name":"黃忠","camp":"蜀","troop":"弓","season":"S3","rarity":"SP","tags":["爆發","遠程"]},
+  {"name":"馬超","camp":"蜀","troop":"騎","season":"S2","rarity":"SP","tags":["追擊","爆發"]},
+  {"name":"劉備","camp":"蜀","troop":"盾","season":"S1","rarity":"SP","tags":["治療","輔助"]},
+  {"name":"魏延","camp":"蜀","troop":"槍","season":"S2","rarity":"SSR","tags":["輸出","追擊"]},
+  {"name":"法正","camp":"蜀","troop":"盾","season":"S2","rarity":"SSR","tags":["減傷","輔助"]},
+  {"name":"關銀屏","camp":"蜀","troop":"槍","season":"S3","rarity":"SSR","tags":["控制","輸出"]},
 
-  {
-    "name": "曹操",
-    "camp": "魏",
-    "troop": "騎",
-    "season": "S1"
-  },
-  {
-    "name": "郭嘉",
-    "camp": "魏",
-    "troop": "盾",
-    "season": "S1"
-  },
-  {
-    "name": "夏侯惇",
-    "camp": "魏",
-    "troop": "盾",
-    "season": "S1"
-  },
-  {
-    "name": "司馬懿",
-    "camp": "魏",
-    "troop": "弓",
-    "season": "S2"
-  },
-  {
-    "name": "張遼",
-    "camp": "魏",
-    "troop": "騎",
-    "season": "S2"
-  },
-  {
-    "name": "許褚",
-    "camp": "魏",
-    "troop": "盾",
-    "season": "S2"
-  },
+  {"name":"曹操","camp":"魏","troop":"騎","season":"S1","rarity":"SP","tags":["增傷","輔助","魏法"]},
+  {"name":"郭嘉","camp":"魏","troop":"盾","season":"S1","rarity":"SP","tags":["控制","法傷"]},
+  {"name":"夏侯惇","camp":"魏","troop":"盾","season":"S1","rarity":"SP","tags":["坦克","反擊"]},
+  {"name":"司馬懿","camp":"魏","troop":"弓","season":"S2","rarity":"SP","tags":["法傷","後期"]},
+  {"name":"張遼","camp":"魏","troop":"騎","season":"S2","rarity":"SP","tags":["突擊","爆發"]},
+  {"name":"許褚","camp":"魏","troop":"盾","season":"S2","rarity":"SP","tags":["爆發","坦克"]},
+  {"name":"典韋","camp":"魏","troop":"盾","season":"S2","rarity":"SSR","tags":["護衛","坦克"]},
+  {"name":"荀彧","camp":"魏","troop":"弓","season":"S2","rarity":"SSR","tags":["法傷","輔助"]},
+  {"name":"賈詡","camp":"魏","troop":"弓","season":"S3","rarity":"SP","tags":["混亂","控制"]},
+  {"name":"郝昭","camp":"魏","troop":"盾","season":"S3","rarity":"SSR","tags":["恢復","坦克"]},
+  {"name":"樂進","camp":"魏","troop":"騎","season":"S1","rarity":"SSR","tags":["穩定","輸出"]},
+  {"name":"于禁","camp":"魏","troop":"槍","season":"S1","rarity":"SSR","tags":["輸出"]},
 
-  {
-    "name": "周瑜",
-    "camp": "吳",
-    "troop": "弓",
-    "season": "S1"
-  },
-  {
-    "name": "陸遜",
-    "camp": "吳",
-    "troop": "弓",
-    "season": "S1"
-  },
-  {
-    "name": "小喬",
-    "camp": "吳",
-    "troop": "盾",
-    "season": "S1"
-  },
-  {
-    "name": "孫權",
-    "camp": "吳",
-    "troop": "弓",
-    "season": "S2"
-  },
-  {
-    "name": "太史慈",
-    "camp": "吳",
-    "troop": "弓",
-    "season": "S2"
-  },
-  {
-    "name": "甘寧",
-    "camp": "吳",
-    "troop": "騎",
-    "season": "S2"
-  },
+  {"name":"周瑜","camp":"吳","troop":"弓","season":"S1","rarity":"SP","tags":["燃燒","法傷","吳火"]},
+  {"name":"陸遜","camp":"吳","troop":"弓","season":"S1","rarity":"SP","tags":["燃燒","持續傷害"]},
+  {"name":"小喬","camp":"吳","troop":"盾","season":"S1","rarity":"SP","tags":["治療","輔助"]},
+  {"name":"孫權","camp":"吳","troop":"弓","season":"S2","rarity":"SP","tags":["增傷","輔助"]},
+  {"name":"太史慈","camp":"吳","troop":"弓","season":"S2","rarity":"SP","tags":["連擊","輸出"]},
+  {"name":"甘寧","camp":"吳","troop":"騎","season":"S2","rarity":"SP","tags":["爆擊","輸出"]},
+  {"name":"周泰","camp":"吳","troop":"盾","season":"S3","rarity":"SP","tags":["護衛","減傷","泰黃魚"]},
+  {"name":"孫尚香","camp":"吳","troop":"弓","season":"S2","rarity":"SSR","tags":["爆發","追擊"]},
+  {"name":"魯肅","camp":"吳","troop":"盾","season":"S2","rarity":"SSR","tags":["輔助","恢復"]},
+  {"name":"程普","camp":"吳","troop":"盾","season":"S1","rarity":"SSR","tags":["坦克","控制"]},
+  {"name":"呂蒙","camp":"吳","troop":"弓","season":"S3","rarity":"SSR","tags":["控制","法傷"]},
+  {"name":"凌統","camp":"吳","troop":"騎","season":"S3","rarity":"SSR","tags":["突擊","輔助"]},
 
-  {
-    "name": "呂布",
-    "camp": "群",
-    "troop": "騎",
-    "season": "S1"
-  },
-  {
-    "name": "董卓",
-    "camp": "群",
-    "troop": "盾",
-    "season": "S1"
-  },
-  {
-    "name": "馬騰",
-    "camp": "群",
-    "troop": "騎",
-    "season": "S2"
-  },
-  {
-    "name": "袁紹",
-    "camp": "群",
-    "troop": "弓",
-    "season": "S2"
-  },
-  {
-    "name": "貂蟬",
-    "camp": "群",
-    "troop": "盾",
-    "season": "S3"
-  },
-  {
-    "name": "華雄",
-    "camp": "群",
-    "troop": "騎",
-    "season": "S3"
-  },
-
-  {
-    "name": "周泰",
-    "camp": "吳",
-    "troop": "盾",
-    "season": "S3"
-  },
-  {
-    "name": "黃忠",
-    "camp": "蜀",
-    "troop": "弓",
-    "season": "S3"
-  },
-  {
-    "name": "于吉",
-    "camp": "群",
-    "troop": "盾",
-    "season": "S3"
-  }
+  {"name":"呂布","camp":"群","troop":"騎","season":"S1","rarity":"SP","tags":["爆發","群騎"]},
+  {"name":"董卓","camp":"群","troop":"盾","season":"S1","rarity":"SP","tags":["坦克","恢復"]},
+  {"name":"袁紹","camp":"群","troop":"弓","season":"S2","rarity":"SP","tags":["增傷","群弓"]},
+  {"name":"馬騰","camp":"群","troop":"騎","season":"S2","rarity":"SP","tags":["追擊","輔助"]},
+  {"name":"貂蟬","camp":"群","troop":"盾","season":"S3","rarity":"SP","tags":["魅惑","控制"]},
+  {"name":"于吉","camp":"群","troop":"盾","season":"S3","rarity":"SP","tags":["毒傷","恢復"]},
+  {"name":"華雄","camp":"群","troop":"騎","season":"S3","rarity":"SSR","tags":["爆發"]},
+  {"name":"左慈","camp":"群","troop":"盾","season":"S2","rarity":"SSR","tags":["恢復","輔助"]},
+  {"name":"高順","camp":"群","troop":"盾","season":"S2","rarity":"SSR","tags":["陷陣","坦克"]},
+  {"name":"顏良","camp":"群","troop":"槍","season":"S1","rarity":"SSR","tags":["輸出"]},
+  {"name":"文醜","camp":"群","troop":"騎","season":"S1","rarity":"SSR","tags":["爆發"]},
+  {"name":"張角","camp":"群","troop":"弓","season":"S3","rarity":"SP","tags":["雷擊","法傷","控制"]}
 ]
