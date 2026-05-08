@@ -1,0 +1,233 @@
+from __future__ import annotations
+import random
+from typing import List, Dict, Tuple
+from app.models.entities import Team, Hero, Skill, TimedStatus
+
+CONTROL_STATUS = {"震慑","缴械","技穷","混乱","嘲讽","虚弱","断粮"}
+MAX_ROUNDS = 8
+
+class BattleEngine:
+    def __init__(self, team_a: Team, team_b: Team, seed: int | None = None, log: bool = False):
+        self.team_a = team_a.clone()
+        self.team_b = team_b.clone()
+        self.round = 1
+        self.rng = random.Random(seed)
+        self.logs: List[str] = []
+        self.keep_log = log
+
+    def log(self, msg: str) -> None:
+        if self.keep_log:
+            self.logs.append(msg)
+
+    def enemy_team(self, actor: Hero) -> Team:
+        return self.team_b if actor in self.team_a.heroes else self.team_a
+
+    def own_team(self, actor: Hero) -> Team:
+        return self.team_a if actor in self.team_a.heroes else self.team_b
+
+    def other_team(self, team: Team) -> Team:
+        return self.team_b if team is self.team_a else self.team_a
+
+    def battle_over(self) -> bool:
+        return self.team_a.defeated() or self.team_b.defeated()
+
+    def winner(self) -> str:
+        if self.team_a.defeated() and self.team_b.defeated():
+            return "draw"
+        if self.team_b.defeated():
+            return "A"
+        if self.team_a.defeated():
+            return "B"
+        hp_a = sum(h.hp for h in self.team_a.alive())
+        hp_b = sum(h.hp for h in self.team_b.alive())
+        if hp_a == hp_b:
+            return "draw"
+        return "A" if hp_a > hp_b else "B"
+
+    def run(self) -> Dict:
+        self.apply_command_passives()
+        while self.round <= MAX_ROUNDS and not self.battle_over():
+            self.log(f"第 {self.round} 回合開始")
+            self.round_start_effects()
+            units = sorted(self.team_a.alive() + self.team_b.alive(), key=lambda h: h.initiative, reverse=True)
+            for actor in units:
+                if not actor.alive() or self.battle_over():
+                    continue
+                self.take_turn(actor)
+            self.round_end()
+            self.round += 1
+
+        return {
+            "winner": self.winner(),
+            "rounds": min(self.round, MAX_ROUNDS),
+            "team_a_hp": sum(max(0, h.hp) for h in self.team_a.heroes),
+            "team_b_hp": sum(max(0, h.hp) for h in self.team_b.heroes),
+            "logs": self.logs,
+        }
+
+    def apply_command_passives(self) -> None:
+        for hero in self.team_a.heroes + self.team_b.heroes:
+            for skill in hero.skills:
+                if skill.type in {"passive","command"} and skill.buff:
+                    self.apply_buff_skill(hero, skill)
+
+    def round_start_effects(self) -> None:
+        for hero in self.team_a.alive() + self.team_b.alive():
+            if hero.has_status("火攻"):
+                dmg = int(120 + hero.max_hp * 0.018)
+                self.damage(None, hero, dmg, "火攻")
+            if hero.has_status("畏惧"):
+                pass
+
+    def round_end(self) -> None:
+        for hero in self.team_a.heroes + self.team_b.heroes:
+            hero.tick_statuses()
+
+    def take_turn(self, actor: Hero) -> None:
+        if actor.has_status("震慑"):
+            self.log(f"{actor.name} 被震慑，无法行动")
+            return
+
+        skill = self.choose_skill(actor)
+        if skill:
+            self.cast_skill(actor, skill)
+        else:
+            self.normal_attack(actor)
+
+    def choose_skill(self, actor: Hero) -> Skill | None:
+        if actor.has_status("技穷"):
+            return None
+        active_skills = [s for s in actor.skills if s.type == "active"]
+        for skill in active_skills:
+            rate = skill.trigger_rate
+            rate -= actor.status_value("主动率降低")
+            rate = max(0.0, min(1.0, rate))
+            if self.rng.random() <= rate:
+                return skill
+        return None
+
+    def select_targets(self, actor: Hero, target_type: str) -> List[Hero]:
+        own = self.own_team(actor)
+        enemy = self.enemy_team(actor)
+
+        if actor.has_status("混乱") and target_type not in {"self","team","ally_two"}:
+            pool = [h for h in own.alive() + enemy.alive() if h is not actor]
+            return self.rng.sample(pool, min(len(pool), 1)) if pool else []
+
+        if target_type == "self":
+            return [actor]
+        if target_type == "team":
+            return own.alive()
+        if target_type == "all":
+            return enemy.alive()
+        if target_type == "two":
+            alive = enemy.alive()
+            return self.rng.sample(alive, min(2, len(alive)))
+        if target_type == "ally_two":
+            alive = own.alive()
+            return self.rng.sample(alive, min(2, len(alive)))
+        alive = enemy.alive()
+        return [self.rng.choice(alive)] if alive else []
+
+    def cast_skill(self, actor: Hero, skill: Skill) -> None:
+        targets = self.select_targets(actor, skill.target)
+        self.log(f"{actor.name} 发动 {skill.name}")
+
+        if skill.damage_type == "heal":
+            for t in targets:
+                amount = self.calc_heal(actor, skill)
+                if t.has_status("断粮"):
+                    amount = int(amount * 0.3)
+                t.hp = min(t.max_hp, t.hp + amount)
+                self.log(f"{actor.name} 治疗 {t.name} {amount}")
+                if skill.effect and self.rng.random() <= skill.effect.get("chance", 0):
+                    t.add_status(TimedStatus(skill.effect["name"], skill.effect.get("duration",1), 0, actor.name))
+            return
+
+        if skill.buff:
+            self.apply_buff_skill(actor, skill)
+            return
+
+        for t in targets:
+            dmg = self.calc_damage(actor, t, skill)
+            self.damage(actor, t, dmg, skill.name)
+            self.try_apply_effect(actor, t, skill)
+
+    def apply_buff_skill(self, actor: Hero, skill: Skill) -> None:
+        buff = skill.buff
+        if not buff:
+            return
+        targets = self.select_targets(actor, skill.target)
+        for t in targets:
+            t.add_status(TimedStatus(buff["name"], buff.get("duration", 1), buff.get("value", 0), actor.name))
+            self.log(f"{t.name} 获得 {buff['name']}")
+
+    def try_apply_effect(self, actor: Hero, target: Hero, skill: Skill) -> None:
+        if skill.effect and self.rng.random() <= skill.effect.get("chance", 0):
+            target.add_status(TimedStatus(skill.effect["name"], skill.effect.get("duration",1), 0, actor.name))
+            self.log(f"{target.name} 获得状态 {skill.effect['name']}")
+
+        if skill.conditional_effect:
+            ce = skill.conditional_effect
+            if target.has_status(ce.get("if_status","")) and self.rng.random() <= ce.get("chance", 0):
+                target.add_status(TimedStatus(ce["name"], ce.get("duration",1), 0, actor.name))
+                self.log(f"{target.name} 触发条件状态 {ce['name']}")
+
+    def normal_attack(self, actor: Hero) -> None:
+        if actor.has_status("缴械"):
+            self.log(f"{actor.name} 被缴械，无法普攻")
+            return
+        targets = self.select_targets(actor, "one")
+        if not targets:
+            return
+        target = targets[0]
+        dummy = Skill("普通攻击", "normal", "physical", 1.0, "one", 1.0)
+        dmg = self.calc_damage(actor, target, dummy)
+        self.damage(actor, target, dmg, "普通攻击")
+
+        if actor.has_status("连击") and self.rng.random() < actor.status_value("连击"):
+            if target.alive():
+                dmg2 = int(self.calc_damage(actor, target, dummy) * 0.75)
+                self.damage(actor, target, dmg2, "连击")
+
+    def calc_damage(self, actor: Hero, target: Hero, skill: Skill) -> int:
+        if skill.damage_type == "strategy":
+            attack_stat = actor.intelligence
+            defense_stat = target.intelligence
+        elif skill.damage_type == "hybrid":
+            attack_stat = (actor.force + actor.intelligence) / 2
+            defense_stat = (target.command + target.intelligence) / 2
+        else:
+            attack_stat = actor.force
+            defense_stat = target.command
+
+        base = attack_stat * 38 * skill.multiplier
+        reduction = defense_stat * 15
+        dmg = max(80, base - reduction)
+
+        dmg *= self.rng.uniform(0.88, 1.12)
+
+        dmg *= 1 + actor.status_value("增伤")
+        dmg *= 1 - target.status_value("减伤")
+
+        if target.has_status("畏惧"):
+            dmg *= 1.10
+        if actor.has_status("虚弱"):
+            dmg *= 0.30
+
+        # 火攻與連環類聯動：目標異常越多，小幅增傷
+        negative_count = sum(1 for s in target.statuses if s.name in CONTROL_STATUS or s.name in {"火攻","畏惧","洪水","风暴","妖术"})
+        dmg *= 1 + min(negative_count, 5) * 0.04
+
+        return max(1, int(dmg))
+
+    def calc_heal(self, actor: Hero, skill: Skill) -> int:
+        base = actor.intelligence * 30 * skill.multiplier
+        return int(base * self.rng.uniform(0.9, 1.1))
+
+    def damage(self, actor: Hero | None, target: Hero, amount: int, source: str) -> None:
+        target.hp = max(0, target.hp - amount)
+        src = actor.name if actor else source
+        self.log(f"{src} 对 {target.name} 造成 {amount} 伤害，剩余 {target.hp}")
+        if target.hp <= 0:
+            self.log(f"{target.name} 败退")

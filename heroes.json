@@ -1,0 +1,81 @@
+from __future__ import annotations
+from typing import List, Optional
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel, Field
+
+from app.services.data_loader import make_team, all_hero_names, formations, load_heroes
+from app.battle.simulator import simulate_match
+from app.ai.team_ai import recommend_teams, synergy_score
+from app.site_config import SITE_TITLE, SITE_DESCRIPTION, MAX_PUBLIC_SIMULATIONS, MAX_PUBLIC_AI_SIMULATIONS
+
+app = FastAPI(title="三國謀定天下 隊伍碰撞勝率模擬器")
+templates = Jinja2Templates(directory="templates")
+
+class SimulateRequest(BaseModel):
+    team_a: List[str] = Field(..., min_length=3, max_length=3)
+    team_b: List[str] = Field(..., min_length=3, max_length=3)
+    times: int = 1000
+    log_one: bool = False
+
+class RecommendRequest(BaseModel):
+    hero_pool: List[str] = Field(..., min_length=3)
+    enemy_team: Optional[List[str]] = Field(None, min_length=3, max_length=3)
+    top_n: int = 10
+    sim_times: int = 250
+
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "heroes": all_hero_names(),
+        "formations": formations(),
+        "site_title": SITE_TITLE,
+        "site_description": SITE_DESCRIPTION,
+    })
+
+@app.get("/api/heroes")
+async def api_heroes():
+    heroes = load_heroes()
+    return [
+        {
+            "name": h.name, "camp": h.camp, "troop": h.troop,
+            "force": round(h.force, 1), "command": round(h.command, 1),
+            "intelligence": round(h.intelligence, 1), "initiative": round(h.initiative, 1),
+            "own_skill": h.own_skill
+        }
+        for h in heroes.values()
+    ]
+
+@app.get("/api/formations")
+async def api_formations():
+    return formations()
+
+@app.post("/api/simulate")
+async def api_simulate(payload: SimulateRequest):
+    team_a = make_team("A", payload.team_a)
+    team_b = make_team("B", payload.team_b)
+    safe_times = min(payload.times, MAX_PUBLIC_SIMULATIONS)
+    result = simulate_match(team_a, team_b, safe_times, payload.log_one)
+    result["team_a"] = payload.team_a
+    result["team_b"] = payload.team_b
+    result["team_a_synergy"] = synergy_score(payload.team_a)
+    result["team_b_synergy"] = synergy_score(payload.team_b)
+    return result
+
+@app.post("/api/recommend")
+async def api_recommend(payload: RecommendRequest):
+    return {
+        "results": recommend_teams(
+            hero_pool=payload.hero_pool,
+            enemy_team=payload.enemy_team,
+            top_n=payload.top_n,
+            sim_times=min(payload.sim_times, MAX_PUBLIC_AI_SIMULATIONS)
+        )
+    }
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}

@@ -1,0 +1,153 @@
+# 三國謀定天下｜個人隊伍碰撞勝率模擬網站
+
+這是一個可部署成個人網站的版本，包含：
+
+- 隊伍 A vs 隊伍 B 勝率模擬
+- AI 配隊推薦
+- Counter 推薦
+- 戰報樣本
+- 武將資料 JSON
+- 戰法資料 JSON
+- FastAPI 後端
+- 網頁前端
+- Render / Railway / Docker 部署設定
+
+## 本機啟動
+
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+打開：
+
+```text
+http://127.0.0.1:8000
+```
+
+## 上線部署
+
+看：
+
+```text
+DEPLOY.md
+```
+
+## 修改資料
+
+```text
+app/data/heroes.json
+app/data/skills.json
+app/data/formations.json
+```
+
+## 修改網站名稱
+
+```text
+app/site_config.py
+```
+
+## 注意
+
+這是 MVP 勝率模型，不是官方精準公式。  
+準確度需要靠真實戰報、完整戰法、兵種克制、紅度、裝備、韜略來校準。
+
+---
+
+# 三國謀定天下：隊伍碰撞勝率模擬器 MVP 完整版
+
+這是一個可直接啟動的本地網站，包含：
+
+- 隊伍 A vs 隊伍 B 勝率模擬
+- Monte Carlo 多次戰鬥
+- 單場戰報樣本
+- 武將資料 JSON
+- 戰法資料 JSON
+- 控制 / Buff / Debuff 基礎引擎
+- AI 配隊推薦
+- 針對敵方隊伍 Counter 推薦
+- FastAPI 後端 + HTML 前端
+
+## 啟動
+
+### Windows
+雙擊或執行：
+
+```bash
+run.bat
+```
+
+### Mac / Linux
+
+```bash
+bash run.sh
+```
+
+或手動：
+
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+開啟：
+
+```text
+http://127.0.0.1:8000
+```
+
+## 重要說明
+
+目前是 MVP 模型，不是官方精準公式。  
+它已經能做「隊伍碰撞勝率模擬」和「AI 配隊」，但準確度取決於資料與公式校準。
+
+後續要提高準確度，需要補：
+
+1. 真實武將完整資料
+2. 真實戰法倍率與效果
+3. 真實戰報樣本
+4. 傷害公式校準
+5. 兵種克制
+6. 韜略 / 裝備 / 紅度 / 等級 / 加點
+
+## 資料位置
+
+```text
+app/data/heroes.json
+app/data/skills.json
+app/data/formations.json
+```
+
+你可以直接改 JSON 來新增武將與戰法。
+
+## API
+
+### POST /api/simulate
+
+```json
+{
+  "team_a": ["诸葛亮", "姜维", "庞统"],
+  "team_b": ["曹操", "郭嘉", "夏侯惇"],
+  "times": 1000,
+  "log_one": true
+}
+```
+
+### POST /api/recommend
+
+```json
+{
+  "hero_pool": ["诸葛亮", "姜维", "庞统", "赵云", "刘备"],
+  "enemy_team": ["曹操", "郭嘉", "夏侯惇"],
+  "top_n": 10,
+  "sim_times": 250
+}
+```
+
+## 下一版最該做
+
+1. 接入 sgmdtx 爬蟲輸出的 heroes / skills
+2. 加入完整兵種克制
+3. 加入戰法解析器
+4. 加入戰報匯入校準
+5. 部署到 Render / Railway / VPS
